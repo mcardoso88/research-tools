@@ -1,0 +1,12 @@
+{
+  "name": "miguel-tools",
+  "description": "Miguel's shared research tools",
+  "owner": { "name": "mcardoso88" },
+  "plugins": [
+    {
+      "name": "paper-tools",
+      "source": "./plugins/paper-tools",
+      "description": "Shared skills and instructions for my research papers"
+    }
+  ]
+}
