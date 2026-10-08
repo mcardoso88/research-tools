@@ -156,13 +156,13 @@ The key: *audience analysis determines the balance*. Who are they? What do they 
 Slide titles carry the argument. They are not labels—they are claims.
 
 **Weak**: "Results"
-**Strong**: "Treatment increased distance by 61 miles on average"
+**Strong**: "[Treatment] increased [outcome] by [X] on average"
 
 **Weak**: "Literature Review"
 **Strong**: "Prior work ignores the supply-side margin"
 
 **Weak**: "Methods"
-**Strong**: "We exploit county-level variation in clinic closures"
+**Strong**: "We exploit [unit]-level variation in [policy or shock]"
 
 If someone reads only your slide titles in sequence, they should understand your argument. The titles *are* the argument. Everything else is evidence and elaboration.
 
@@ -209,8 +209,6 @@ Not:
 4. Here's my analysis
 5. Here's my finding (finally)
 
-**Exception for teaching:** When the pedagogical goal is for students to understand the *reasoning*, not just the *conclusion*, the pyramid inverts. You walk through the logic step by step and arrive at the result together. The student who sees "OLS is BLUE" on slide 2 and then watches you prove it has a fundamentally different learning experience from the student who works through the proof and discovers the result. Both are valid. Context determines which is appropriate.
-
 ### The Opening
 
 The first slide after your title is the most important. It must:
@@ -237,7 +235,7 @@ The last slide lingers. It determines what people remember.
 
 Bad closings:
 - "Questions?" (lazy, generic)
-- Summary slides repeating everything verbatim (redundant in short talks; appropriate in lectures)
+- Summary slides repeating everything verbatim (redundant in short talks)
 - Thank you slides (wasted real estate)
 
 Good closings:
@@ -415,19 +413,6 @@ For research presentations:
 - **One coefficient at a time**: Don't show full regression tables; show the estimate that matters
 - **Acknowledge limitations before Q&A**: Preempt Referee 2
 
-### Teaching Decks
-
-Teaching decks deserve special attention because the audience constraints are fundamentally different from seminar or pitch contexts.
-
-**Students are not peers.** They are encountering your ideas for the first time. The cognitive load budget is smaller per idea, and the cost of confusion is higher. The core rules still apply — one idea per slide, no wall of sentences, titles are assertions — but the implementation shifts:
-
-- **More labeled setups are needed.** "From the definition of variance:", "Applying the expectation operator:", "Step 3 of 4:" — these signposts are not clutter in a teaching deck. They are load-bearing structure.
-- **Roadmap slides earn their place.** In a seminar, an agenda slide with eight items is overload. In a 75-minute lecture, a roadmap slide that says "We are here" helps students who got lost re-orient. Use them at transitions.
-- **The MB/MC calculus shifts.** A recap slide has near-zero marginal benefit in a seminar (the audience already knows). In a teaching deck, recap slides have high marginal benefit because repetition is how learning works. The optimal deck for teaching is less compressed than the optimal deck for persuasion.
-- **Worked examples are content, not filler.** Showing the algebra step by step is not violating "one idea per slide." The idea *is* the derivation. Each step can be its own slide if needed.
-- **Brevity < Clarity**: Don't compress at the cost of understanding.
-- **Show the reasoning**: Don't just show conclusions; show how you got there.
-
 ### Working Decks (for collaborators)
 
 When working with collaborators:
@@ -546,4 +531,4 @@ That's the theory. Now apply it.
 
 ---
 
-*This framework synthesizes tacit knowledge from academic seminars, consulting decks, and teaching presentations. The patterns exist. People who've seen enough decks internalize them without being able to articulate them. This is an attempt to articulate them.*
+*This framework synthesizes tacit knowledge from academic seminars, conference talks, and consulting decks. The patterns exist. People who've seen enough decks internalize them without being able to articulate them. This is an attempt to articulate them.*

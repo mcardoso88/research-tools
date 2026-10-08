@@ -1,6 +1,6 @@
 ---
 name: blindspot
-description: Peripheral vision audit for empirical output. Finds what the author cannot see — problems hiding in plain sight (vices) and opportunities being overlooked (virtues). Inspired by Viktor Shklovsky's defamiliarization and conversations with Jason Fletcher. Use when output exists and interpretation is about to happen.
+description: Peripheral vision audit for empirical output. Finds what the author cannot see — problems hiding in plain sight (vices) and opportunities being overlooked (virtues). Inspired by Viktor Shklovsky's defamiliarization. Use when output exists and interpretation is about to happen.
 allowed-tools: Read, Bash(ls*), Bash(cat*), Glob, Grep
 argument-hint: '[path-to-figure, table, or results file] [brief description of what you think the main finding is]'
 ---
@@ -9,7 +9,7 @@ argument-hint: '[path-to-figure, table, or results file] [brief description of w
 
 Viktor Shklovsky, the Soviet literary theorist, argued that art exists to restore perception. A man who walks barefoot up a mountain eventually cannot feel his feet. Everything becomes habitual, automatic, unconscious. Art exists to make the stone stony again — to force you to *feel* what you have stopped noticing.
 
-Research has the same problem. By the time you've spent months on a paper, you can't feel the stones under your feet. The main finding has collapsed your attention. Everything else in the output — the spike at t=1, the missing subgroup, the heterogeneity richer than the average, the identification strategy stronger than you argued — has become invisible. Not because it's hidden, but because you stopped looking.
+Research has the same problem. By the time you've spent months on a paper, you can't feel the stones under your feet. The main finding has collapsed your attention. Everything else in the output — the spike in a pre-period, the missing subgroup, the heterogeneity richer than the average, the identification strategy stronger than you argued — has become invisible. Not because it's hidden, but because you stopped looking.
 
 **Blindspot makes the stone stony again.**
 
@@ -27,7 +27,7 @@ This skill audits your *perception* of your own output. It is not checking wheth
 | **Timing** | When output first appears, before writing begins | After the project is complete, in a fresh session |
 | **Persona** | Shklovsky — restoring perception | Health inspector with a checklist |
 | **Catches** | Overlooked problems (vices) and overlooked opportunities (virtues) | Coding errors, replication failures, bad controls |
-| **Would have caught the t=1 spike?** | Yes | No |
+| **Would have caught an unexplained feature in a figure?** | Yes | No |
 | **Would have caught a merge error?** | Maybe | Yes |
 
 **The workflow:**
@@ -67,7 +67,7 @@ Work through all four quadrants in order. For each finding: state what you found
 
 *Something in the output that doesn't fit the story, but nobody asked about it.*
 
-The t=1 spike. A coefficient that flips sign in one spec. A sample size that drops by 30% between columns 2 and 3. The author has trained themselves not to see it because they're focused on the main result.
+A spike in one period that the story doesn't predict. A coefficient that flips sign in one spec. A sample size that drops by 30% between columns 2 and 3. The author has trained themselves not to see it because they're focused on the main result.
 
 ### Protocol
 
@@ -191,12 +191,6 @@ After working through all four quadrants, produce a Blindspot Report:
 
 ---
 
-## Origin and Inspiration
+## Credits
 
-This skill was inspired by conversations with Jason Fletcher (University of Wisconsin), who commented on Scott Cunningham's Substack post (Claude Code 35, March 2026) and asked about the spikes at t=1 and t=3 in a figure where Scott had focused entirely on the spike at t=2. The spike at t=1 was the tell — it was inconsistent with the p-hacking interpretation and pointed immediately to rounding.
-
-Fletcher described this as a habit from graduate training — stepping back from the main coefficient and asking about something else in the table. He wrote about it publicly in ["Owning All the Numbers"](https://jasonmfletcher.substack.com/p/owning-all-the-numbers) (March 2026).
-
-The theoretical frame comes from Viktor Shklovsky's "Art as Device" (1917): the purpose of art is to restore perception, to make the stone stony again. Blindspot applies that principle to empirical research — forcing you to see your own output as a stranger would, before the story you want to tell has automated your perception.
-
-See the [full origin story on Substack](https://causalinf.substack.com) for the account of how this skill came to exist.
+Inspired by Jason Fletcher (University of Wisconsin), whose question about overlooked features in a figure from Scott Cunningham's Substack post (Claude Code 35, March 2026) prompted the original skill; see Fletcher's ["Owning All the Numbers"](https://jasonmfletcher.substack.com/p/owning-all-the-numbers) and the origin story at [causalinf.substack.com](https://causalinf.substack.com). The theoretical frame is Viktor Shklovsky's "Art as Device" (1917).

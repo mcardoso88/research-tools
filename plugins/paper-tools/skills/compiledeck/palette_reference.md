@@ -1,11 +1,10 @@
 # Palette Reference
 
-Four palettes extracted from real decks. Use as-is or as inspiration for new designs.
+Four palettes. Warm Professional is the house style and the default; the others are alternatives or inspiration for new designs.
 
 ---
 
-## Warm Professional (Default)
-*Source: rhetoric_of_decks.tex*
+## Warm Professional (Default — house style)
 
 Best for: Academic seminars, conference talks, professional audiences.
 
@@ -25,9 +24,8 @@ Best for: Academic seminars, conference talks, professional audiences.
 ---
 
 ## Bold Modernist
-*Source: workflow_deck.tex*
 
-Best for: Internal presentations, Substack content, talks where energy matters.
+Best for: Internal presentations, policy or public-facing talks where energy matters.
 
 ```latex
 \definecolor{Midnight}{HTML}{1A1A2E}
@@ -46,9 +44,8 @@ Best for: Internal presentations, Substack content, talks where energy matters.
 ---
 
 ## Warm Modernist
-*Source: insights_deck.tex*
 
-Best for: Personal projects, Substack decks, earth-toned storytelling.
+Best for: Earth-toned storytelling, public-facing decks.
 
 ```latex
 \definecolor{Walnut}{HTML}{3D2B1F}
@@ -66,12 +63,11 @@ Best for: Personal projects, Substack decks, earth-toned storytelling.
 ---
 
 ## Academic Muted
-*Source: gov2001_probability.tex*
 
-Best for: University courses, formal academic house style, math-heavy content.
+Best for: Formal academic talks, math-heavy content.
 
 ```latex
-\definecolor{HarvardCrimson}{HTML}{A51C30}
+\definecolor{DeepCrimson}{HTML}{A51C30}
 \definecolor{Slate}{HTML}{4A5568}
 \definecolor{Charcoal}{HTML}{2D3748}
 \definecolor{Forest}{HTML}{276749}
@@ -87,11 +83,10 @@ Best for: University courses, formal academic house style, math-heavy content.
 
 | Context | Recommended palette |
 |---------|-------------------|
-| Academic seminar | Warm Professional or Academic Muted |
-| Teaching lecture | Warm Professional |
-| Working deck (coauthors) | Any — choose based on mood |
-| Substack / public content | Warm Modernist or Bold Modernist |
-| Conference keynote | Warm Professional |
-| Job market talk | Academic Muted |
+| Academic seminar | Warm Professional (default) or Academic Muted |
+| Conference talk | Warm Professional |
+| Working deck (coauthors) | Warm Professional, or any other |
+| Policy / public-facing talk | Warm Modernist or Bold Modernist |
+| Job market talk | Warm Professional or Academic Muted |
 
-When the user requests "colorful" or "expressive": create something NEW each time, using these palettes as mood inspiration, not templates. Aim for 10-12 colors with warm undertones.
+When the user asks for an original, "colorful", or "expressive" style: create something NEW each time, using these palettes as mood inspiration, not templates. Aim for 10-12 colors with warm undertones.

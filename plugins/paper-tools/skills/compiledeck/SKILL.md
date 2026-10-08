@@ -1,7 +1,7 @@
 ---
 name: compiledeck
 description: Create and compile beautiful Beamer presentations following the Rhetoric of Decks philosophy. Use when making slides, creating decks, or compiling .tex presentation files.
-allowed-tools: Bash(pdflatex*), Bash(latexmk*), Bash(ls*), Bash(open*), Bash(python*), Read, Write, Edit, Glob, Grep
+allowed-tools: Bash(pdflatex*), Bash(latexmk*), Bash(ls*), Bash(python*), Read, Write, Edit, Glob, Grep
 argument-hint: [topic-or-tex-file-path]
 ---
 
@@ -19,15 +19,14 @@ Before touching anything, answer three questions:
 
 **Q2: Who is the audience?**
 1. **Academic seminar** — sparse, one idea per slide, titles carry the argument
-2. **Teaching lecture** — clarity over compression, repetition OK, progressive revelation
-3. **Working deck** (coauthors) — more detail OK, document choices, preserve uncertainty
-4. **External non-academic** — storytelling, visual impact, minimal jargon
+2. **Working deck** (coauthors) — more detail OK, document choices, preserve uncertainty
+3. **External non-academic** — storytelling, visual impact, minimal jargon
 
 See `domain_patterns.md` in this skill directory for detailed guidance per audience type.
 
 **Q3: What's the tone?**
-1. **Professional/Academic** — use the Warm Professional palette (default) or Academic Muted
-2. **Colorful/Expressive** — create something new each time. See `palette_reference.md` for inspiration.
+1. **Professional/Academic** — use the Warm Professional palette (the house style and default) or Academic Muted
+2. **Colorful/Expressive** — only when the user asks for an original style; create something new each time. See `palette_reference.md` for inspiration.
 
 ---
 
@@ -40,7 +39,7 @@ If a slide has two ideas, split it. No exceptions.
 
 ### Titles are assertions, not labels
 - Bad: "Results"
-- Good: "Treatment increased distance by 61 miles on average"
+- Good: "[Treatment] increased [outcome] by [X] on average"
 - Bad: "Literature Review"
 - Good: "Prior work ignores the supply-side margin"
 
@@ -59,7 +58,7 @@ Bullets are a confession that you haven't found the structure. Look for:
 - A hierarchy (use size/color differentiation)
 - A causal chain (use arrows)
 
-Exception: genuinely parallel items (e.g., a list of axioms in a teaching deck).
+Exception: genuinely parallel items (e.g., a list of identifying assumptions).
 
 ### Charts: one message, direct labels
 - Every chart communicates ONE finding
@@ -77,9 +76,9 @@ Not "try to fix." Zero. See the Compile Loop below.
 
 ## Step 3: The Preamble
 
-For new decks, use this template. It is extracted from real decks that work.
+For new decks, use this template.
 
-### Default: Warm Professional Palette (10 colors)
+### Default: Warm Professional Palette (house style, 10 colors)
 
 ```latex
 \documentclass[aspectratio=169,11pt]{beamer}
@@ -256,9 +255,7 @@ For EACH curved arrow found:
 Full rules and formulas are in `tikz_rules.md`. This verification runs on ALL TikZ figures in the deck, not just the one you just edited.
 
 ### 5f: Open the PDF
-```bash
-open [file].pdf
-```
+Tell the user to open `[file].pdf` in VS Code (click it in the Explorer, or `code [file].pdf` from the terminal).
 
 ---
 
@@ -280,6 +277,7 @@ For domain-specific structures, see `domain_patterns.md`.
 
 When a deck needs data visualizations:
 
+0. **Reuse first.** Empirical figures and tables usually already exist as Stata exports in the project's `output/figures/` and `output/tables/`. Use those directly; do not re-estimate results in Python. The steps below apply only to NEW figures.
 1. Write a Python script (`generate_figures.py`) using matplotlib
 2. Use the same color palette as the LaTeX deck
 3. Save figures as PDF (vector, not raster) to a `figures/` subdirectory
@@ -316,8 +314,8 @@ When a deck needs data visualizations:
 All in this skill directory (`./`, relative to this skill's folder):
 
 - **tikz_rules.md** — Measurement-based TikZ collision prevention rules. READ THIS before creating any TikZ diagram.
-- **palette_reference.md** — Four real palettes extracted from existing decks, with a selection guide.
-- **domain_patterns.md** — Detailed structural patterns for academic seminars, teaching lectures, and working decks.
+- **palette_reference.md** — Four palettes (Warm Professional is the house style), with a selection guide.
+- **domain_patterns.md** — Detailed structural patterns for academic seminars and working decks.
 
 ## Full Philosophy Reference
 

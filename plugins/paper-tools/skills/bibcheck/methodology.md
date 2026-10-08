@@ -6,21 +6,13 @@ Long single-agent runs over many citations show a pattern: the first 10–15 ent
 
 The fix is structural. Give each agent one small, well-bounded task and let many agents run in parallel. Each agent now has full attention budget on its single task. The orchestration layer aggregates.
 
-This is the same idea behind `/referee2` (one fresh agent reads the whole artifact cold, instead of asking the producing agent to grade itself), behind `/split-pdf` (parallel agents on small chunks, instead of one agent on a giant PDF), and behind the package-audit experiment (96 zero-discretion agents instead of one general-purpose agent making implicit choices).
+This is the same idea behind `/referee2` (one fresh agent reads the whole artifact cold, instead of asking the producing agent to grade itself) and behind `/split-pdf` (parallel agents on small chunks, instead of one agent on a giant PDF).
 
-## Two modes, two failure modes
+## What one agent per citation catches
 
-**Per-citation mode** is for *catching mixed-up entries*. The most common silent error in an inherited `.bib` file is a field paired with the wrong paper — the title of paper A with the authors and journal of paper B, where someone copy-pasted carelessly years ago. A per-citation agent looks for this directly: identify the paper from the canonical source, then ask "do all my fields belong to the same paper?"
+Per-citation auditing is designed for *catching mixed-up entries*. The most common silent error in an inherited `.bib` file is a field paired with the wrong paper — the title of paper A with the authors and journal of paper B, where someone copy-pasted carelessly years ago. A per-citation agent looks for this directly: identify the paper from the canonical source, then ask "do all my fields belong to the same paper?"
 
-**Per-field mode** is for *catching systematic transcription errors* — a journal name consistently rendered with the wrong abbreviation; a year systematically off by one because a working-paper year leaked into the published-paper entry; volumes and issues swapped. A field specialist that has seen the whole bibliography can spot patterns a per-citation agent cannot, because the per-citation agent only sees its single entry.
-
-The two modes are complements, not alternatives. If a manuscript is going somewhere it cannot afford a citation error, run both.
-
-## Why per-field requires CLI isolation
-
-Inside a single Claude conversation, parallel subagents share some context — at minimum, the orchestrator's framing of the task. For per-citation mode this is fine and even helpful. For per-field mode it is contaminating: a year-specialist that knows the title-specialist already said "this paper is X" is no longer a fresh check on the year. The agents need to converge to the truth independently for the cross-check to mean anything.
-
-Launching each field specialist via `claude --dangerously-skip-permissions -p "..."` from a Bash subprocess is the simplest way to get true isolation. Each subprocess is a fresh CLI session with no shared conversation memory.
+Systematic transcription errors — a journal name consistently rendered with the wrong abbreviation, a year systematically off by one because a working-paper year leaked into the published-paper entry — are harder to see one entry at a time. The final reviewer pass looks across all corrected entries for these patterns.
 
 ## What the audit standard is
 

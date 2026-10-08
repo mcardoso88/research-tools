@@ -12,15 +12,17 @@ Every time you create or edit TikZ in a deck, follow this order. Do not skip ste
 
 Before checking geometry, check continuity. When the same diagram, cycle, or visual element appears on more than one slide:
 
-1. **Colors must match.** If "Inspect" is Slate on slide 31, it must be Slate on slide 32. Grep for repeated node names or labels across frames.
+1. **Colors must match.** If a node is Slate on slide N, it must be Slate on slide N+1. Grep for repeated node names or labels across frames.
 2. **Layout must match.** Same nodes at same positions, same spacing, same font sizes.
-3. **Deliberate changes must be the ONLY changes.** If slide 32 adds a red rectangle to highlight the bottleneck, that should be the only difference from slide 31. Nothing else moves, recolors, or resizes.
+3. **Deliberate changes must be the ONLY changes.** If slide N+1 adds a red rectangle to highlight one element, that should be the only difference from slide N. Nothing else moves, recolors, or resizes.
 
 This catches continuity errors that are invisible when looking at one slide in isolation but obvious when flipping between consecutive slides.
 
 ```bash
-# Find all frames that share the same node names
-grep -n "node.*draft\|node.*compile\|node.*inspect" [file].tex
+# List every named node with its line number
+grep -nE '\\node[^;]*\([A-Za-z0-9_]+\)' [file].tex
+# Node names defined more than once (candidates for cross-slide checks)
+grep -oE '\\node[^(;]*\([A-Za-z0-9_]+\)' [file].tex | grep -oE '\([A-Za-z0-9_]+\)$' | sort | uniq -c | sort -rn | awk '$1 > 1'
 ```
 
 For each group of slides sharing elements, verify color and position consistency.

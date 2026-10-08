@@ -25,24 +25,6 @@
 
 ---
 
-## Teaching Lecture (50-75 minutes, learners)
-
-### How this differs from a seminar
-- **Clarity over compression** — more text per slide is acceptable because students take notes from slides
-- **Repetition is OK** — learning requires revisiting concepts
-- **Progressive revelation** — use `\pause` (Beamer overlays) for step-by-step derivations
-- **Definitions get their own slides** with block environments
-- **"Why does this matter?"** should appear frequently
-
-### Domain-specific rules
-- Font size floor is 18pt (lower than seminars because students sit closer)
-- Bullet points are acceptable for lists of properties, axioms, or steps
-- Show derivations step by step, not just final results
-- Include worked examples
-- Proofs use `align` environments revealed step by step with `\pause`
-
----
-
 ## Working Deck (coauthors, variable length)
 
 ### How this differs from external
@@ -78,7 +60,7 @@ All decks increasingly circulate beyond their live audience. Strategies:
 - **The surprising number**: "In 2024, 47% of..." (big, centered, no decoration)
 - **The puzzle**: "Why did X happen when theory predicts Y?"
 - **The provocative claim**: "Everything we thought about Z is wrong."
-- **The human story**: "When Maria arrived at the clinic..." (then zoom out to data)
+- **The human story**: "When [a named person] arrived at [a specific place]..." (then zoom out to data)
 
 ### Openings that fail
 - "Motivation" with four bullet points

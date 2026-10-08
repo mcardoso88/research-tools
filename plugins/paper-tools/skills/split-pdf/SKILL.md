@@ -62,7 +62,7 @@ If `split_dir` already exists and contains `.pdf` files, ask:
 Create splits in `<foldername>_build/split_<pdf-basename>/` and run the splitting script:
 
 ```python
-from PyPDF2 import PdfReader, PdfWriter
+from pypdf import PdfReader, PdfWriter
 import os, sys
 
 def split_pdf(input_path, output_dir, pages_per_chunk=4):
@@ -103,7 +103,7 @@ The build directory convention (`<foldername>_build/`) keeps split artifacts, co
 
 The original PDF remains permanently. The splits are working copies. If anything goes wrong, you can always re-split from the original.
 
-If PyPDF2 is not installed, install it: `pip install PyPDF2`
+If pypdf is not installed, install it: `pip install pypdf`
 
 ## Step 3: Read in Batches of 3 Splits
 

@@ -6,7 +6,7 @@ This document explains the reasoning behind the split-pdf skill. It is reference
 
 ## The Problem
 
-Claude Code (currently Claude Opus 4.5, model ID `claude-opus-4-5-20251101`) can read PDFs, and it has a very large context window (200k tokens in). In principle, a 40-page academic paper should fit comfortably. In practice, it doesn't work well. Claude Code regularly chokes when asked to read long PDFs, and this manifests in two distinct ways:
+Claude Code can read PDFs, and it has a very large context window. In principle, a 40-page academic paper should fit comfortably. In practice, it doesn't work well. Claude Code regularly chokes when asked to read long PDFs, and this manifests in two distinct ways:
 
 **Problem 1: Session-breaking "prompt too long" errors.** PDF rendering into tokens is expensive. PDFs are not plain text — they are containers for fonts, vector graphics, embedded images, multi-column layouts, mathematical notation, tables, and footnotes. When Claude Code ingests a PDF, it must convert this complex layout into a linear token stream. A long PDF can produce a token sequence that, combined with the rest of the conversation context, exceeds the model's input limit. When this happens, Claude Code returns a "prompt too long" error. There is no way to recover — the session is broken, and all context is lost unless it has been externalized to files.
 

@@ -16,9 +16,8 @@ Create a new research project folder with Miguel's standard structure. This skil
 ├── CLAUDE.md              # Permanent research rules (copied from template)
 ├── README.md              # Project-specific overview (auto-generated)
 ├── code/
-│   ├── R/
-│   ├── python/
-│   └── stata/
+│   ├── stata/
+│   └── python/
 ├── data/
 │   ├── raw/               # Original source data (never modify)
 │   └── clean/             # Cleaned/merged datasets
@@ -40,7 +39,7 @@ Create a new research project folder with Miguel's standard structure. This skil
 
 3. **Create all directories:**
    ```bash
-   mkdir -p [project-name]/{code/{R,stata,python},data/{raw,clean},output/{figures,tables},documents,decks,notes,progress_logs}
+   mkdir -p [project-name]/{code/{stata,python},data/{raw,clean},output/{figures,tables},documents,decks,notes,progress_logs}
    ```
 
 4. **Copy CLAUDE.md** from `CLAUDE_template.md` (relative to this skill's folder):
@@ -64,9 +63,8 @@ Create a new research project folder with Miguel's standard structure. This skil
    ├── CLAUDE.md              # Research rules & estimation philosophy (permanent)
    ├── README.md              # This file — project-specific notes
    ├── code/
-   │   ├── R/                 # R scripts
-   │   ├── python/            # Python scripts
-   │   └── stata/             # Stata do-files
+   │   ├── stata/             # Stata do-files (run locally)
+   │   └── python/            # Python scripts
    ├── data/
    │   ├── raw/               # Original source data (never modify these)
    │   └── clean/             # Cleaned and merged datasets

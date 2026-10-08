@@ -1,6 +1,6 @@
 ---
 name: tikz
-description: Quick visual-collision check for figures — TikZ inside .tex files OR rendered .png/.jpg/.pdf figures from R/Python. Three checks only. (1) Bezier-curve label collisions via gap math. (2) Label-to-object whitespace. (3) Labels touching or running off the figure edge. These are the visual errors that compile cleanly — pdflatex never warns about them, ggsave never refuses to write them, so the agent that produced them does not know they are wrong. Use after generating any figure where visual correctness matters and you cannot eyeball it yourself.
+description: Quick visual-collision check for figures — TikZ inside .tex files OR rendered .png/.jpg/.pdf figures from Stata/Python. Three checks only. (1) Bezier-curve label collisions via gap math. (2) Label-to-object whitespace. (3) Labels touching or running off the figure edge. These are the visual errors that compile cleanly — pdflatex never warns about them, graph export never refuses to write them, so the agent that produced them does not know they are wrong. Use after generating any figure where visual correctness matters and you cannot eyeball it yourself.
 allowed-tools: Bash(grep*), Bash(ls*), Bash(file*), Bash(wc*), Read, Edit
 argument-hint: [path/to/file.tex | path/to/figure.png | path/to/figure.pdf]
 ---
@@ -109,15 +109,15 @@ Any label partially cut off by the image boundary, or running into the figure ma
 
 ### Honest limitation
 
-Visual-mode detection is less reliable than math mode. Reliable: clipping, large overlaps. Less reliable: subtle whitespace violations under a few pixels. When the figure is high-stakes, also run `/tikz` on the source code (.R, .py, or .tex) that generated it — the source has signals the rendering does not.
+Visual-mode detection is less reliable than math mode. Reliable: clipping, large overlaps. Less reliable: subtle whitespace violations under a few pixels. When the figure is high-stakes, also review the source code (.do, .py, or .tex) that generated it — the source has signals the rendering does not.
 
 ### Typical fixes by toolchain
 
-**ggplot2 (R)**:
-- Move legend: `theme(legend.position = "top")`
-- Crowded labels: `ggrepel::geom_text_repel()`
-- Edge clipping: `theme(plot.margin = margin(t=10, r=20, b=10, l=20))`
-- Long y-axis title: `theme(axis.title.y = element_text(margin = margin(r=10)))`
+**Stata** (fixes go to the author's do-file; Stata cannot be run here):
+- Move legend: `legend(position(12) rows(1))` or `legend(ring(0) position(1))`
+- Crowded marker labels: `mlabposition()` / `mlabvposition()` per observation, or label fewer points
+- Edge clipping: `graphregion(margin(l+2 r+4 t+2 b+2))`
+- Long y-axis title: `ytitle(, margin(r+2))`
 
 **matplotlib (Python)**:
 - Auto-padding: `plt.tight_layout()`
@@ -157,7 +157,7 @@ Then **stop**. The user reviews and edits. If they want a deeper look at a speci
 - It does not re-audit the whole file after a fix. That's the quadratic blowup that killed the previous version.
 - It does not run `pdflatex` in a loop.
 - It does not eyeball multi-page PDFs. PDF mode is single-figure only; for decks, point it at the source `.tex` instead.
-- It does not perform cross-slide consistency checks, autosized-node detection, scale-factor compensation, or the four other passes the previous version did. If you want those, the prior behavior is in git history at `~/mixtapetools/` HEAD~ before this commit.
+- It does not perform cross-slide consistency checks, autosized-node detection, scale-factor compensation, or the four other passes the previous version did.
 
 ---
 

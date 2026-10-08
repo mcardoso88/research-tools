@@ -48,7 +48,7 @@ The user provides a path to a .tex file (or you infer it from context).
 ## Example Output
 
 ```
-✓ Compiled successfully: insights_deck.pdf
+✓ Compiled successfully: slides.pdf
 
 Warnings (2):
 - Line 245: Overfull \hbox (15.2pt too wide) in paragraph

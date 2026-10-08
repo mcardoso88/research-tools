@@ -1,15 +1,15 @@
 ---
 name: beautiful_deck
-description: End-to-end beautiful Beamer deck creation. Designs an original Beamer theme tailored to a specific audience, restructures existing content via the Rhetoric of Decks (ethos / pathos / logos), generates figures and tables from R/Python/Stata code first, embeds code blocks in the deck, produces standalone walkthrough scripts, compiles to zero warnings, runs /tikz for visual collision cleanup, and dispatches a graphics-only audit agent for label and coordinate checks. Use when creating a presentation from scratch or restructuring existing content into a new beautiful deck.
-allowed-tools: Bash, Read, Write, Edit, Glob, Grep, Task
+description: End-to-end beautiful Beamer deck creation. Designs an original Beamer theme tailored to a specific audience, restructures existing content via the Rhetoric of Decks (ethos / pathos / logos), reuses Stata-exported figures and tables from the project and generates any new figures with Python code first, saves the script behind every new figure, compiles to zero warnings, runs /tikz for visual collision cleanup, and dispatches a graphics-only audit agent for label and coordinate checks. Use when creating a presentation from scratch or restructuring existing content into a new beautiful deck.
+allowed-tools: Bash, Read, Write, Edit, Glob, Grep, Agent
 argument-hint: [content-path-or-description]
 ---
 
 # Beautiful Deck
 
-This skill implements Scott's full deck-creation pipeline. It is NOT just a compile helper — it is the entire workflow from blank slate to audited, compiled PDF with accompanying scripts for students.
+This skill implements the full deck-creation pipeline. It is NOT just a compile helper — it is the entire workflow from blank slate to audited, compiled PDF, with the code behind every new figure saved alongside it.
 
-Scott's philosophy: **a deck is a performance medium, not a document**. It must be beautiful, technically rigorous, smoothly paced (MB/MC equivalence across slides), and visually clean at the pixel level. Every element earns its presence. Every title is an assertion. Every figure carries one message.
+The governing principle: **a deck is a performance medium, not a document**. It must be beautiful, technically rigorous, smoothly paced (MB/MC equivalence across slides), and visually clean at the pixel level. Every element earns its presence. Every title is an assertion. Every figure carries one message.
 
 This skill is the orchestrator. It calls `/tikz` for visual cleanup, references `compiledeck`'s mechanical rules (preambles, palettes, TikZ measurement formulas), and dispatches sub-agents for rhetoric and graphics audits.
 
@@ -21,33 +21,34 @@ You MUST collect answers to these questions before generating a single slide. If
 
 ### Q1: What is the source content?
 - A paper draft (`.tex`, `.pdf`, `.md`)
-- Existing lecture notes
 - An existing deck to be restructured
 - A description and you generate from scratch
 - A paper the user is reading (in which case: have they split-pdf'd it? If yes, read the summaries. If no, ask whether to split-pdf first.)
 
 ### Q2: Who is the audience?
 
-Pick ONE and commit. Different audiences demand different rhetorical balances (per Aristotle). Cite this table verbatim when confirming with the user:
+Pick ONE and commit. Different audiences demand different rhetorical balances (per Aristotle). The percentages follow the balance table in `../compiledeck/rhetoric_of_decks.md` Part II. Cite this table verbatim when confirming with the user:
 
 | Context | Logos | Ethos | Pathos | Implications for the deck |
 |---|---|---|---|---|
-| **Academic seminar (PhD-level, research talk)** | 50% | 40% | 10% | Sparse, performative, identification strategy early, one coefficient at a time, Devil's Advocate slide |
-| **Teaching lecture (undergrad or grad course)** | 45% | 20% | 35% | Clarity > compression, progressive revelation, worked examples as content, recap slides allowed |
-| **Conference presentation (20 min talk)** | 50% | 35% | 15% | Fast punch, headline result on slide 2, no literature review, ~15 slides max |
-| **Working deck (for coauthors or future-self)** | 60% | 30% | 10% | Document choices, preserve uncertainty, more text allowed, rigor > polish |
-| **External non-academic (policy, media, industry)** | 30% | 25% | 45% | Storytelling, human impact, minimal jargon, visual impact |
+| **Academic seminar (research talk)** | 45% | 20% | 35% | Sparse, performative, identification strategy early, one coefficient at a time, Devil's Advocate slide |
+| **Conference presentation (20 min talk)** | 45% | 20% | 35% | Same balance as a seminar, compressed: fast punch, headline result on slide 2, no literature review, ~15 slides max |
+| **Working deck (for coauthors or future-self)** | 50% | 40% | 10% | Technical-review balance: document choices, preserve uncertainty, more text allowed, rigor > polish |
+| **External non-academic (policy, media, industry)** | 35% | 25% | 40% | Pitch balance: storytelling, human impact, minimal jargon, visual impact |
 
 ### Q3: What is the tone / aesthetic?
 
 Two paths. Pick ONE:
 
-**Path A: Scott's house style (Professional/Academic).** Use the Warm Professional palette from `../compiledeck/SKILL.md` (relative to this skill's folder) (DeepNavy, Teal, WarmOrange, Gold). Scott uses this for outward-facing academic work.
+**Path A: House style (default).** Use the Warm Professional palette from `../compiledeck/SKILL.md` (relative to this skill's folder) (DeepNavy, Teal, WarmOrange, Gold). This is the house style for all academic work. Use it unless the user asks for an original style.
 
-**Path B: Original, audience-specific design.** You design something new — a palette, a frame-title style, a TikZ accent system — tuned to this specific audience. This is the default when Scott says "design for me an original Beamer style." Do NOT reuse a previous deck's theme. You are creating something new.
+**Path B: Original, audience-specific design.** Use this only when the user asks for an original style (e.g., "design an original Beamer style for this"). You design something new — a palette, a frame-title style, a TikZ accent system — tuned to this specific audience. Do NOT reuse a previous deck's theme. You are creating something new.
 
-### Q4: Which code language for figures and tables?
-R (ggplot2 + xtable/kable), Python (matplotlib/seaborn + pandas to LaTeX), or Stata (graph export png + esttab). Pick ONE for the whole deck.
+### Q4: Which figures and tables already exist?
+Empirical results are produced in Stata on the author's own machine; Stata is not available in this environment. Before planning any new figure:
+- Check the project's `output/figures/` (typically Stata `graph export` files) and `output/tables/` (typically `esttab` `.tex` fragments). **Reuse these whenever they exist** — they are the numbers the paper reports.
+- New figures (schematics, illustrative plots, re-plots of numbers already in the paper's tables) are generated with **Python** (matplotlib).
+- Never re-estimate a result in Python to produce a deck number that differs from the Stata output in the paper.
 
 ### Q5: Output format — Beamer (default) or something else?
 
@@ -56,7 +57,6 @@ R (ggplot2 + xtable/kable), Python (matplotlib/seaborn + pandas to LaTeX), or St
 The user may request an alternative markdown-based presentation system. Accept these on explicit request:
 
 - **Quarto (`.qmd` → HTML / reveal.js or PDF / Beamer)** — accepted if the user says "Quarto" or "reveal.js". Produces HTML slides with live code execution, good for live coding demos.
-- **R Markdown (`.Rmd` → xaringan or ioslides)** — accepted if the user specifies. Mostly superseded by Quarto.
 - **Typst** — accepted if the user specifies. Newer, faster compiles, less mature ecosystem.
 - **Raw HTML / reveal.js** — accepted if the user specifies. Full web control, needs a browser to present.
 - **Pure markdown → Marp** — accepted if the user specifies. Lightweight, limited typographic control.
@@ -79,19 +79,19 @@ This goes on the closing slide and frames the entire narrative arc. If the user 
 **Whatever format the user chose in Q5, the visual design must be original to this deck.** Not a reused template. Not a default Beamer theme the audience has seen a hundred times. A reader looking at the compiled PDF should NOT be able to guess what theme package is underneath.
 
 This is the rule regardless of the format:
-- **Beamer:** You must produce a custom `.sty` file or an inline preamble that is fully styled. You MAY build on top of a theme package like `metropolis`, `beamerposter`, `moloch`, or `focus` as a foundation — they give you sane defaults for spacing and structure — but you MUST override the colors, fonts, frame-title style, title slide, and bullets enough that the result is visually unrecognizable as the source theme. A reader should see a Scott-original aesthetic, not "oh, metropolis again."
+- **Beamer:** You must produce a custom `.sty` file or an inline preamble that is fully styled. You MAY build on top of a theme package like `metropolis`, `beamerposter`, `moloch`, or `focus` as a foundation — they give you sane defaults for spacing and structure — but you MUST override the colors, fonts, frame-title style, title slide, and bullets enough that the result is visually unrecognizable as the source theme. A reader should see an original aesthetic, not "oh, metropolis again."
 - **Quarto / reveal.js:** Custom CSS, custom theme file, overridden defaults. Do not ship the default Quarto theme.
 - **Typst:** Custom style block with real design choices, not the default.
 
 Under no circumstances ship boilerplate. The effectiveness of the deck comes from **a visual identity tuned to this specific content and this specific audience**, per Aristotle's principles of ethos, pathos, and logos. Boilerplate signals "I didn't bother" — which destroys ethos before the first slide lands.
 
-The goal is: something truly effective for *this* audience, *this* content, and the rhetorical balance you committed to in Q2. If the audience is undergraduate data science, the aesthetic should feel different from a PhD causal inference seminar. If the audience is a policy audience, it should feel different from a conference theory talk. The palette, the typography, the frame-title treatment, the section dividers — every element should be chosen deliberately.
+The goal is: something truly effective for *this* audience, *this* content, and the rhetorical balance you committed to in Q2. A department research seminar should feel different from a policy audience; a 20-minute conference talk should feel different from a working deck for coauthors. The palette, the typography, the frame-title treatment, the section dividers — every element should be chosen deliberately.
 
 ### How to approach it
 
-**If Path A (Scott's house style):** Copy the Warm Professional preamble from `../compiledeck/SKILL.md` Step 3 — this IS Scott's house style and is not boilerplate for outward-facing academic work. Proceed to Step 2.
+**If Path A (house style — the default):** Copy the Warm Professional preamble from `../compiledeck/SKILL.md` Step 3 — this IS the house style and is not boilerplate for academic work. Proceed to Step 2.
 
-**If Path B (original design — the default when Scott says "design for me an original Beamer style"):** You are designing an original aesthetic. Follow this process:
+**If Path B (original design — only when the user asks for an original style):** You are designing an original aesthetic. Follow this process:
 
 ### 1.1 Palette construction
 
@@ -99,10 +99,10 @@ Pick a core accent (one color, not an ensemble). This is the emotional anchor of
 
 | Audience | Core accent | Why |
 |---|---|---|
-| Undergraduate data science | Teal #048A81 | Fresh, energetic, reads as "modern" without being juvenile |
-| PhD causal inference seminar | DeepNavy #2E4057 | Serious, anchored, matches the rhetorical weight of identification |
-| Policy / applied work | WarmOrange #E85D04 | Human warmth, urgency, signals "this matters" |
-| Conference theory talk | SoftPurple #9D4EDD | Distinctive, academic, unusual enough to be remembered |
+| Research seminar | DeepNavy #2E4057 | Serious, anchored, matches the rhetorical weight of identification |
+| Working deck (coauthors) | Teal #048A81 | Fresh, readable, signals "work in progress" without looking unfinished |
+| Policy / applied audience | WarmOrange #E85D04 | Human warmth, urgency, signals "this matters" |
+| Conference talk | SoftPurple #9D4EDD | Distinctive, academic, unusual enough to be remembered |
 
 Around the core, build a 10-color palette: 1 core accent, 1 secondary accent (analogous or complementary), 2 neutrals for text (one dark, one warm gray), 2 background neutrals (cream + white), 1 alert color (usually a deep red), 1 success / positive color (usually forest green or teal), 2 tertiary colors for charts. Define them all in `\definecolor{}` at the top of the preamble.
 
@@ -153,19 +153,19 @@ Not the reverse. Never the reverse.
 
 | Stage | What it looks like | Why it comes here |
 |---|---|---|
-| **1. Narrative** | A story, a concrete scene, a named person in a named place facing a real problem. "In 2001, Chinese hospitals faced a policy change that forced them to cut labor subsidies..." | Anchors the audience in something human and specific before anything abstract arrives. Activates pathos. Builds curiosity, not resistance. |
-| **2. Application** | A specific example the audience can hold in their hand. "Suppose you are a hospital manager deciding whether to hire a nurse or buy an MRI machine." | Makes the abstraction physical. The audience can *picture* the decision, not just parse the symbols. |
+| **1. Narrative** | A story, a concrete scene, a named person in a named place facing a real problem. "In [year], [setting] faced [policy change] that forced [actors] to [response]..." | Anchors the audience in something human and specific before anything abstract arrives. Activates pathos. Builds curiosity, not resistance. |
+| **2. Application** | A specific example the audience can hold in their hand. "Suppose you are a [decision-maker] choosing between [option A] and [option B]." | Makes the abstraction physical. The audience can *picture* the decision, not just parse the symbols. |
 | **3. Picture** | A figure, a diagram, a visual that shows the pattern. One message per picture. Labeled directly. | Pictures carry intuition faster than words or equations. The audience sees the relationship before they name it. |
 | **4. Codeblock** | A short, readable snippet that shows how the idea is computed. Embedded in the deck, matching the deck's palette, also saved as a standalone script. | Code is a concrete, operational form of the idea. It is a middle layer between intuition and formalism — more precise than a picture, more approachable than a theorem. |
 | **5. Technical** | The equation. The theorem. The identification strategy in formal notation. The proof. | This arrives AFTER the audience already understands what it is saying. The technical statement becomes a compact summary of what they have already intuited — not a wall they must climb. |
 
-**The anti-pattern is the lecture that opens with definitions, proves a theorem, and then offers an example at the end "for intuition."** This treats the technical as primary and the intuition as decorative. Scott's pedagogy is the opposite: the intuition is the content, and the technical statement is what you walk AWAY with, not what you walk IN with.
+**The anti-pattern is the talk that opens with definitions, proves a theorem, and then offers an example at the end "for intuition."** This treats the technical as primary and the intuition as decorative. This skill takes the opposite approach: the intuition is the content, and the technical statement is what you walk AWAY with, not what you walk IN with.
 
 When sequencing a section, check every transition: am I moving toward the technical, not away from it? If you find yourself showing an equation before the figure that motivates it, swap them. If you find yourself writing "let $X$ be a random variable..." before the audience has a story to attach $X$ to, delete that slide and start with the story.
 
 **Exceptions to the order:**
 - **Definitions of load-bearing terms** may appear early if the term is unavoidably needed — but even then, state the intuitive meaning first in plain English, then give the formal definition on the *next* slide.
-- **Roadmap slides** in long teaching decks can appear before the narrative begins (for orientation) — but the first *content* slide must still be narrative.
+- **Roadmap slides** in long decks can appear before the narrative begins (for orientation) — but the first *content* slide must still be narrative.
 - **Title slides and section dividers** are structural and exempt.
 
 ### The arc structure
@@ -176,7 +176,7 @@ Every deck has three acts. The proportions depend on audience (see Q2 table).
 - Title slide.
 - Opening hook: a provocative question, a surprising statistic, or a concrete problem the audience recognizes. **NOT** an agenda, **NOT** "Today I'm going to talk about...", **NOT** a definition slide. See `../compiledeck/rhetoric_of_decks.md` Part IV "The Opening" for examples.
 - The stakes: why does this matter? (This is where pathos lives.)
-- The roadmap (optional — only for teaching decks > 30 slides).
+- The roadmap (optional — only for decks > 30 slides).
 
 **Act II — Investigation (the argument).** 60–75% of the deck.
 - Identification strategy early (for academic seminars — skeptics want to know your source of variation before they'll engage with results).
@@ -187,7 +187,7 @@ Every deck has three acts. The proportions depend on audience (see Q2 table).
 **Act III — Resolution (takeaway).** 2–4 slides.
 - The headline result, stated as a claim (title) with one figure or one equation supporting it.
 - Implications: what does this change? What should the audience do or believe differently?
-- Closing slide: the ONE sentence from Q5, on a full-bleed dark background, centered. **NOT** "Questions?", **NOT** "Thank you". This slide lingers — it is what people remember.
+- Closing slide: the ONE sentence from Q6, on a full-bleed dark background, centered. **NOT** "Questions?", **NOT** "Thank you". This slide lingers — it is what people remember.
 
 ### Titles as assertions
 
@@ -195,11 +195,11 @@ Every slide title must state a claim. Examples:
 
 | Weak (label) | Strong (assertion) |
 |---|---|
-| Results | Treatment increased K/L ratio by 18% on average |
-| Identification | We exploit the 10% WTO tariff ceiling as a mechanical dose |
-| Methodology | Markups are computed via De Loecker–Warzynski, not Cobb-Douglas |
-| Literature | Prior work confuses level effects with causal responses |
-| Implications | A smaller subsidy would have generated the same K/L response |
+| Results | [Treatment] increased [outcome] by [X]% on average |
+| Identification | We exploit [source of variation] as [the identifying shock] |
+| Methodology | [Key quantity] is measured via [method A], not [method B] |
+| Literature | Prior work [gap or confusion the paper resolves] |
+| Implications | [Counterfactual policy] would have produced [result] |
 
 If someone reads only the titles in sequence, they should understand the entire argument. Test this: write out just the titles. Does the sequence tell a coherent story? If not, your arc is broken.
 
@@ -210,7 +210,7 @@ Write the outline as:
 # <Deck name> — Outline
 
 ## Audience and rhetoric
-<Copy the Q1–Q5 answers here>
+<Copy the Q1–Q6 answers here>
 
 ## Theme
 <Describe the palette, frame title style, aesthetic choices>
@@ -231,53 +231,57 @@ Write the outline as:
   ...
   K. Closing: <the one sentence>
 
-## Figures and tables (code-first)
-  - Figure 1: <what it shows, which script generates it>
-  - Table 1: <what it contains, which script generates it>
+## Figures and tables
+  - Figure 1: <what it shows; reused from output/figures/<file>, or which Python script generates it>
+  - Table 1: <what it contains; which Stata-exported .tex fragment it comes from>
 ```
 
 **SHOW THIS OUTLINE TO THE USER AND WAIT FOR APPROVAL BEFORE WRITING SLIDES.** Do not skip this step. It is dramatically cheaper to fix the arc at this stage than after every slide is written.
 
 ---
 
-## Step 3: Figure and Table Generation — Code First, Then Embed
+## Step 3: Figures and Tables — Reuse Existing Output, Generate New Ones Code First
 
-This is the non-negotiable order:
+Empirical results come from Stata, run on the author's own machine (Stata is not available here). The paper's tables and figures are the source of truth for every number in the deck.
 
-1. Write standalone scripts FIRST, in `scripts/` subdirectory
+**Reuse first.** If a figure exists in the project's `output/figures/` (typically a Stata `graph export`), include it directly — copy or reference it rather than redrawing it. If a table exists as a Stata-exported `.tex` fragment in `output/tables/` (or in a git-ignored folder such as `stata_output/`), `\input{}` it or build a slimmed-down slide version from the same numbers. Never re-estimate a result in Python to get a deck number.
+
+**Generate new figures code first.** For anything that does not already exist (schematics, illustrative plots, re-plots of numbers already reported in the paper's tables), this is the non-negotiable order:
+
+1. Write standalone Python scripts FIRST, in a `scripts/` subdirectory
 2. Run them FIRST, generating figures into `figures/` and tables into `tables/`
 3. Only THEN write the `\includegraphics{}` and `\input{}` calls in the deck
 
-The reverse order — writing `\includegraphics{figure_1.png}` first and generating `figure_1.png` to match — is the #1 cause of mismatched labels, wrong data, and broken compiles. Do not do it.
+The reverse order — writing `\includegraphics{figure_1.pdf}` first and generating `figure_1.pdf` to match — is the #1 cause of mismatched labels, wrong data, and broken compiles. Do not do it.
 
 ### 3.1 Scripts must be standalone
 
-Each script must run on its own without depending on other scripts. A student should be able to open `scripts/figure_3.R`, run it, and reproduce exactly `figures/figure_3.png`. This means:
+Each script must run on its own without depending on other scripts. Anyone should be able to open `scripts/figure_3.py`, run it, and reproduce exactly `figures/figure_3.pdf`. This means:
 - Absolute imports at the top
 - Data loading at the top (from `data/` — do not hard-code absolute paths)
 - Figure or table export at the bottom
 - No shared state between scripts
 
-### 3.2 Figure principles (applies to R, Python, or Stata)
+### 3.2 Figure principles (applies to new Python figures; check reused Stata figures against them too)
 
 - **One message per figure.** If you can't state the takeaway in one sentence, the figure is too complex.
-- **Title states the finding** (not the chart type). "Markups fell fastest at the 95th percentile" not "Markup distribution over time".
+- **Title states the finding** (not the chart type). "[Outcome] fell fastest at [group]" not "[Outcome] over time".
 - **Direct labels, no legends** whenever possible. Label the lines at their endpoints. Label the bars inside the bars. Reserve legends only for truly unreadable density.
 - **Match the deck's palette.** Import the deck colors into the script so the figures read as part of the deck, not as foreign imports.
-- **Figure background matches the slide background.** In matplotlib: `fig.set_facecolor()` and `ax.set_facecolor()`. In ggplot2: `theme(plot.background = element_rect(fill = ...))`.
+- **Figure background matches the slide background.** In matplotlib: `fig.set_facecolor()` and `ax.set_facecolor()`. Reused Stata figures cannot be restyled here; if one clashes with the deck, note it for the author to re-export in Stata (e.g., `graphregion(color(white))`) rather than redrawing it.
 - **Vector format (PDF) for line charts and schematics.** PNG only for images or dense rasters where vector files would be too large.
-- **Check coordinates explicitly.** ggplot2 and matplotlib have silent failure modes where labels get cut off, legends obscure data, or tick marks misalign. The `/tikz` skill also checks figure label positioning — use it.
+- **Check coordinates explicitly.** Stata exports and matplotlib both have silent failure modes where labels get cut off, legends obscure data, or tick marks misalign. The `/tikz` skill also checks figure label positioning — use it.
 
 ### 3.3 Table principles
 
 - **Use `booktabs`** — no vertical rules, no double horizontal rules. Top rule, mid rule, bottom rule. Nothing else.
 - **Highlight the key number.** A coefficient of interest should be boxed, colored, or bolded. Not all numbers are equal.
 - **Strip everything that doesn't advance the argument.** Standard errors in parentheses, stars for significance, R² and N at the bottom. No "Adj R²", no "F-stat", no "Prob > F" unless the argument depends on them.
-- **Export to `.tex` fragments, not full tables.** Use `\input{tables/main_result.tex}` in the deck, so the script can regenerate without touching the deck source.
+- **Use `.tex` fragments, not full tables.** Use `\input{tables/main_result.tex}` in the deck (for Stata output, the `esttab` fragment), so the table can be regenerated without touching the deck source.
 
 ### 3.4 Embed code blocks in the deck
 
-When the deck teaches code (teaching decks, pedagogical content), show the code **in the deck** using a `listings` environment styled to match the palette. Example:
+When the code itself is part of the argument (e.g., a methods or replication talk), show it **in the deck** using a `listings` environment styled to match the palette. Example:
 
 ```latex
 \begin{lstlisting}[basicstyle=\ttfamily\small,
@@ -288,18 +292,15 @@ When the deck teaches code (teaching decks, pedagogical content), show the code 
                    frame=single,
                    framesep=4pt,
                    rulecolor=\color{LightGray}]
-df |>
-  summarize(.by = sic3,
-    Delta_ln_theil = ln_theil[year == 2004] - ln_theil[year == 2001],
-    dose = pmax(tariff[year == 2001] - 0.1, 0)
-  ) |>
-  drop_na()
+* [one-line description of the step]
+reghdfe [outcome] [treatment] [controls], ///
+    absorb([unit] [year]) vce(cluster [cluster_var])
 \end{lstlisting}
 ```
 
 Keep code blocks short (< 12 lines). If the code is longer, split across slides or show a structural skeleton on the slide and put the full code in the accompanying script file.
 
-**Scott's rule:** every code block shown in the deck should correspond to a real script file in `scripts/` that the user can hand to students. The deck is the performance; the script is the reference.
+**Rule:** every code block shown in the deck should correspond to a real file — a script in `scripts/` or a do-file in the project's `code/` folder. The deck is the performance; the script is the reference.
 
 ---
 
@@ -381,7 +382,7 @@ Inside frames, USE the styles but never DEFINE them with `#1`. This is not optio
 
 ## Step 5: The Compile Loop — ZERO TOLERANCE for Warnings
 
-**Scott's standing rule: "I do not even tolerate cosmetic mistakes."** Overfull `\hbox`, underfull `\hbox`, overfull `\vbox`, underfull `\vbox`, font warnings, missing references — all of these must return zero counts before you hand the deck over, and they must also return zero counts at every *intermediate* checkpoint in this skill. A zero count on the final compile is not enough if intermediate compiles had warnings — the warnings must be actively eliminated as they appear, not left to accumulate.
+**Standing rule: no cosmetic mistakes are tolerated.** Overfull `\hbox`, underfull `\hbox`, overfull `\vbox`, underfull `\vbox`, font warnings, missing references — all of these must return zero counts before you hand the deck over, and they must also return zero counts at every *intermediate* checkpoint in this skill. A zero count on the final compile is not enough if intermediate compiles had warnings — the warnings must be actively eliminated as they appear, not left to accumulate.
 
 ### The compile check — run this verbatim after every edit
 
@@ -429,10 +430,7 @@ Then, **in this order**:
    ```
    Must return nothing. Any `LaTeX Warning: Reference ... undefined` or `There were undefined references` must be resolved — either by defining the missing label, removing the reference, or running pdflatex a second time to pick up forward references.
 
-5. **Open the PDF and visually inspect.**
-   ```bash
-   open <deck>.pdf
-   ```
+5. **Open the PDF and visually inspect.** Tell the user to open `<deck>.pdf` in VS Code (click it in the Explorer, or `code <deck>.pdf` from the terminal). You can also inspect the rendered pages yourself with the Read tool.
    Scroll through. Does every slide look clean? Are there any visual glitches you can't attribute to a specific warning? These are the silent failures — continue to Steps 6–8 to catch them.
 
 ### The circuit breaker — do not spiral
@@ -471,7 +469,7 @@ Before handing the deck to the user in Step 10, run the compile check one last t
 
 LaTeX warnings catch box overflow. They do NOT catch:
 - TikZ label collisions with arrows, boxes, or other labels
-- ggplot2 / matplotlib labels clipped at figure boundaries
+- Stata / matplotlib labels clipped at figure boundaries
 - Coordinate misalignment in custom diagrams
 - Text bleeding into patches or shapes
 
@@ -488,7 +486,7 @@ Apply all fixes the skill suggests, then recompile. Go back to Step 5 if any new
 
 ## Step 7: Rhetoric Audit — Second Agent
 
-Dispatch a sub-agent (via the Task tool) to evaluate the deck against the Rhetoric of Decks principles. Give it the following task prompt:
+Dispatch a sub-agent (via the Agent tool) to evaluate the deck against the Rhetoric of Decks principles. Give it the following task prompt:
 
 > You are Referee 2 in rhetoric-review mode. Audit the Beamer deck at `<deck>.tex` and its compiled PDF at `<deck>.pdf` against the principles in `../compiledeck/rhetoric_of_decks.md`. Check specifically:
 >
@@ -512,8 +510,8 @@ Dispatch a second sub-agent focused ONLY on graphics. This is the step most peop
 
 > You are a graphics auditor. Audit ONLY the figures, tables, and TikZ diagrams in the compiled PDF at `<deck>.pdf`. Do not evaluate rhetoric, narrative, or content. Check specifically:
 >
-> 1. **Numerical accuracy.** For every figure or table, verify that the numbers shown match the numbers in the underlying script output. Any mismatch is a critical error.
-> 2. **Label positioning.** Are labels where they appear to be in the source code, or has the coordinate system drifted? For TikZ, verify intended coordinates match rendered positions. For ggplot2/matplotlib, verify axis labels, tick marks, legends, and annotations are not clipped or obscuring data.
+> 1. **Numerical accuracy.** For every figure or table, verify that the numbers shown match the underlying source: the Stata-exported table/figure in `output/` (or the paper's LaTeX tables) for empirical results, or the Python script output for new figures. Any mismatch is a critical error.
+> 2. **Label positioning.** Are labels where they appear to be in the source code, or has the coordinate system drifted? For TikZ, verify intended coordinates match rendered positions. For Stata exports and matplotlib figures, verify axis labels, tick marks, legends, and annotations are not clipped or obscuring data.
 > 3. **Axis and tick coherence.** Are axis ranges sensible? Are tick marks at meaningful intervals? Are tick labels readable?
 > 4. **Color consistency.** Do figure colors match the deck palette? Are the same colors used consistently across figures for the same variables?
 > 5. **Font sizing.** Are figure fonts readable at the back of the room (minimum 18pt equivalent in rendered form)?
@@ -539,7 +537,7 @@ Run the compile loop one last time. Required state:
 - Graphics audit sub-agent concerns all addressed
 - The deck opens and displays correctly in a PDF viewer
 
-If any of these are not true, go back to the relevant step. Do not hand the deck to the user in a state that isn't fully audited. Scott's rule: "I do not even tolerate cosmetic mistakes."
+If any of these are not true, go back to the relevant step. Do not hand the deck to the user in a state that isn't fully audited. No cosmetic mistakes are tolerated.
 
 ---
 
@@ -554,12 +552,11 @@ Produce this directory structure:
 ├── <deck_name>_outline.md   # The Step 2 outline (keep for future iteration)
 ├── preamble.tex             # If the preamble is long enough to factor out
 ├── scripts/
-│   ├── figure_1.R           # Standalone, runnable
-│   ├── figure_2.R
-│   ├── table_1.R
+│   ├── figure_1.py          # Standalone, runnable (new figures only)
+│   ├── figure_2.py
 │   └── ...
 ├── figures/
-│   ├── figure_1.pdf
+│   ├── figure_1.pdf         # New Python figures (reused Stata figures stay in output/figures/)
 │   ├── figure_2.pdf
 │   └── ...
 └── tables/
@@ -570,8 +567,8 @@ Produce this directory structure:
 Report to the user:
 - Path to the compiled PDF
 - Slide count
-- List of figures and tables generated
-- List of accompanying scripts (for student walkthroughs)
+- Figures and tables reused from `output/` (Stata) vs. generated new (Python)
+- List of scripts that generate each new figure or table
 - Summary of the rhetoric audit (what was flagged, what was fixed)
 - Summary of the graphics audit (same)
 - Any remaining TODOs or known limitations

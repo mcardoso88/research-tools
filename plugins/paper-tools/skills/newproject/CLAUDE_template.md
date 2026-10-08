@@ -61,9 +61,9 @@ Things you tried but abandoned (so AI doesn't suggest them again):
 
 ## Key Files
 
-- **Main analysis**: `path/to/script.R` or `script.py`
-- **Data cleaning**: `path/to/cleaning.R`
-- **Paper draft**: `path/to/paper.tex`
+- **Main analysis**: `code/stata/main.do`
+- **Data cleaning**: `code/stata/01_clean.do`
+- **Paper draft**: in the Dropbox Overleaf folder (not in this repo); copy tables into `stata_output/` when needed
 - **Presentation**: `path/to/slides.tex`
 
 ---
@@ -106,25 +106,23 @@ This project uses the Referee 2 audit protocol. Correspondence is stored at:
 ```
 correspondence/referee2/
 ├── YYYY-MM-DD_round1_report.md      # Referee 2's detailed written report
-├── YYYY-MM-DD_round1_deck.pdf       # Referee 2's visual presentation of findings
 ├── YYYY-MM-DD_round1_response.md    # Author's revision response
 ├── YYYY-MM-DD_round2_report.md      # Referee 2's second-round assessment
-├── YYYY-MM-DD_round2_deck.pdf
 └── ...
 ```
 
-Replication scripts created by Referee 2 are stored at:
+Python replication scripts created by Referee 2 are stored at:
 ```
 code/replication/
-├── referee2_replicate_main_results.do
-├── referee2_replicate_main_results.R
 ├── referee2_replicate_main_results.py
 └── ...
 ```
 
+The author's pipeline is in Stata and runs locally (Stata is not available in Codespaces). Referee 2 compares its Python results against the paper's LaTeX tables. Before requesting an audit, copy the paper's `.tex` file or exported table `.tex` files into a git-ignored folder such as `stata_output/`.
+
 **Current Status:** [Not yet audited / Round 1 complete / Round 2 in progress / Accepted]
 
-**Critical Rule:** Referee 2 NEVER modifies author code. It only reads, runs, and creates its own replication scripts in `code/replication/`. Only the author (you) modifies your own code in response to referee concerns.
+**Critical Rule:** Referee 2 NEVER modifies author code. It only reads the author's code and creates and runs its own Python replication scripts in `code/replication/`. Only the author (you) modifies your own code in response to referee concerns.
 
 **Important:** Referee reports do NOT belong in this CLAUDE.md file. They are standalone documents in the correspondence directory. This section only tracks status.
 
