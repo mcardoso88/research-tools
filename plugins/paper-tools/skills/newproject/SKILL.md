@@ -7,7 +7,7 @@ argument-hint: [project-name]
 
 # New Project Scaffold
 
-Create a new research project folder with Scott's standard structure. This skill is invoked at the start of every project.
+Create a new research project folder with Miguel's standard structure. This skill is invoked at the start of every project.
 
 ## What Gets Created
 
@@ -44,7 +44,7 @@ Create a new research project folder with Scott's standard structure. This skill
    ```
 
 4. **Copy CLAUDE.md** from `CLAUDE_template.md` (relative to this skill's folder):
-   - Replace `[Your Name]` with `Scott`
+   - Replace `[Your Name]` with `Miguel`
    - Update project name in the overview section
 
 5. **Generate README.md** with:
