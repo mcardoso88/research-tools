@@ -63,7 +63,8 @@ Things you tried but abandoned (so AI doesn't suggest them again):
 
 - **Main analysis**: `code/stata/main.do`
 - **Data cleaning**: `code/stata/01_clean.do`
-- **Paper draft**: in the Dropbox Overleaf folder (not in this repo); copy tables into `stata_output/` when needed
+- **Paper draft**: Overleaf via Dropbox, `Dropbox/Apps/Overleaf/[OVERLEAF PROJECT]` (not in this repo); copy tables into `stata_output/` when an audit needs them
+- **Paths / Overleaf export**: `code/python/config.py` + `code/python/overleaf.py` (`to_overleaf(..., kind="tables"|"figures")`); `code/stata/paths.do` (`$ov_tables`, `$ov_figures`). Only `.tex`, `.pdf`, `.png` outputs go to Overleaf, never data
 - **Presentation**: `path/to/slides.tex`
 
 ---
