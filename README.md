@@ -6,7 +6,8 @@ A Claude Code plugin marketplace (`miguel-tools`) containing one plugin, `paper-
 
 | Skill | What it does |
 |---|---|
-| `/newproject` | Scaffolds a research project (`code/stata`, `code/python`, `data/`, `output/`, `decks/`, …) with a CLAUDE.md template. |
+| `/newproject` | Scaffolds a research project, including Overleaf path config and uploader (`code/stata`, `code/python`, `data/`, `output/`, `decks/`, …) with a CLAUDE.md template. |
+| `/overleaf` | Re-runs the Python scripts whose code changed (and everything downstream) so refreshed tables and figures reach the paper's Overleaf project; `--push` sends existing outputs. Stata do-files are flagged for a local run. |
 | `/beautiful_deck` | End-to-end Beamer deck: audience triage, house-style or original theme, narrative outline, reuses Stata figures from `output/figures`, new figures in Python, zero-warning compile, rhetoric and graphics audits. |
 | `/compiledeck` | Beamer preamble (Warm Professional house style), slide rules, compile loop, palettes, TikZ rules. |
 | `/compiletex` | Compiles a `.tex` file and reports errors and warnings. |
